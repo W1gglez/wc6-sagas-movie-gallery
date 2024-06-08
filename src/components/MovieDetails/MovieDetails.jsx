@@ -22,7 +22,7 @@ export default function MovieDetails() {
       >
         Back
       </button>
-      <h1>{movieDetails[0]?.title}</h1>
+      <h3>{movieDetails[0]?.title}</h3>
       <section>
         <img
           src={movieDetails[0]?.poster}
