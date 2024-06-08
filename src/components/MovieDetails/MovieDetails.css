@@ -23,6 +23,16 @@ ul{
 
 li{
     padding: 0 0 0 8px;
+}
 
+.backBtn{
+    padding: 8px 16px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50%;
+    position: absolute;
+    top: 5%;
+    left:3%;
+    cursor: pointer;
 }
 
