@@ -18,6 +18,18 @@ router.get('/', (req, res) => {
 
 });
 
+router.get('/:id', async (req, res) => {
+  const query = `SELECT "movies".*, "genres"."name" AS "movie_genres" FROM "movies_genres" JOIN "movies" ON "movies_genres"."movie_id" = "movies"."id" JOIN "genres" ON "movies_genres"."genre_id" = "genres"."id"  WHERE "movies"."id"=$1 ;
+  `;
+  try {
+    const result = await pool.query(query, [req.params.id]);
+    res.send(result.rows);
+  } catch (err) {
+    console.log('ERROR: Get all movies', err);
+    res.sendStatus(500);
+  }
+});
+
 router.post('/', (req, res) => {
   console.log(req.body);
   // RETURNING "id" will give us back the id of the created movie

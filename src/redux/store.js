@@ -1,12 +1,13 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
-import { takeEvery, put } from 'redux-saga/effects';
+import { takeEvery, takeLeading, put } from 'redux-saga/effects';
 import axios from 'axios';
 
 // Create the rootSaga generator function
 function* rootSaga() {
   yield takeEvery('FETCH_MOVIES', fetchAllMovies);
+  yield takeLeading('FETCH_DETAILS', fetchMovieDetails);
 }
 
 function* fetchAllMovies() {
@@ -16,15 +17,33 @@ function* fetchAllMovies() {
     // Set the value of the movies reducer:
     yield put({
       type: 'SET_MOVIES',
-      payload: moviesResponse.data
+      payload: moviesResponse.data,
     });
   } catch (error) {
     console.log('fetchAllMovies error:', error);
   }
 }
 
+function* fetchMovieDetails(action) {
+  try {
+    const response = yield axios.get(`/api/movies/${action.payload}`);
+    yield put({ type: 'SET_MOVIE_DETAILS', payload: response.data });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
+
+const movieDetails = (state = [], action) => {
+  switch (action.type) {
+    case 'SET_MOVIE_DETAILS':
+      return action.payload;
+    default:
+      return state;
+  }
+};
 
 // Used to store movies returned from the server
 const movies = (state = [], action) => {
@@ -34,7 +53,7 @@ const movies = (state = [], action) => {
     default:
       return state;
   }
-}
+};
 
 // Used to store the movie genres
 const genres = (state = [], action) => {
@@ -44,16 +63,17 @@ const genres = (state = [], action) => {
     default:
       return state;
   }
-}
+};
 
 // Create one store that all components can use
 const storeInstance = createStore(
   combineReducers({
     movies,
     genres,
+    movieDetails,
   }),
   // Add sagaMiddleware to our store
-  applyMiddleware(sagaMiddleware, logger),
+  applyMiddleware(sagaMiddleware, logger)
 );
 
 // Pass rootSaga into our sagaMiddleware

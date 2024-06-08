@@ -1,0 +1,28 @@
+section{
+    display: flex;
+    justify-content: center;
+}
+
+img{
+    flex-basis: 2;
+}
+
+p{
+    width: 50vw;
+    margin:  0 0 0 16px;
+    text-align: left;
+}
+
+ul{
+    text-align: left;
+    padding: 0;
+    margin-left: 16px;
+    list-style: none;
+    
+}
+
+li{
+    padding: 0 0 0 8px;
+
+}
+
