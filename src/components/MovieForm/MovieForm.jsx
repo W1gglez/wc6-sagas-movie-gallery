@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 export default function MovieForm() {
   const dispatch = useDispatch();
   const genreList = useSelector((store) => store.genres);
-  const [genres, setGenres] = useState('');
   const [newMovie, setNewMovie] = useState({
     title: '',
     poster: '',

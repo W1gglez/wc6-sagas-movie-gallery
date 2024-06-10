@@ -14,7 +14,7 @@ function* rootSaga() {
 
 function* addMovie(action) {
   try {
-    yield axios.post(`/api/movies/${action.payload}`);
+    yield axios.post(`/api/movies/`, action.payload );
   } catch (err) {
     console.error(err);
   }
