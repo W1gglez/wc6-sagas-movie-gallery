@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './MovieList.css';
 import { useHistory } from 'react-router-dom';
+import MovieForm from '../MovieForm/MovieForm';
 
 function MovieList() {
   const history = useHistory();
@@ -15,6 +16,7 @@ function MovieList() {
   return (
     <main>
       <h1>MovieList</h1>
+      <MovieForm />
       <section className='movies'>
         {movies.map((movie) => {
           return (

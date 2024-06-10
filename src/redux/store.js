@@ -8,9 +8,19 @@ import axios from 'axios';
 function* rootSaga() {
   yield takeEvery('FETCH_MOVIES', fetchAllMovies);
   yield takeLeading('FETCH_DETAILS', fetchMovieDetails);
+  yield takeLeading('FETCH_GENRES', fetchGenres);
+  yield takeLeading('ADD_MOVIE', addMovie);
 }
 
-function* fetchAllMovies() {
+function* addMovie(action) {
+  try {
+    yield axios.post(`/api/movies/${action.payload}`);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function* fetchAllMovies(action) {
   try {
     // Get the movies:
     const moviesResponse = yield axios.get('/api/movies');
@@ -28,6 +38,15 @@ function* fetchMovieDetails(action) {
   try {
     const response = yield axios.get(`/api/movies/${action.payload}`);
     yield put({ type: 'SET_MOVIE_DETAILS', payload: response.data });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function* fetchGenres(action) {
+  try {
+    const response = yield axios.get('/api/genres');
+    yield put({ type: 'SET_GENRES', payload: response.data });
   } catch (err) {
     console.error(err);
   }
